@@ -1,6 +1,6 @@
 EMAC on Cartesius:
 ===================
-First copy the file ``mh_linux64__cartesius`` to ``config/mh_linux64`` in the MESSy root directory. Then execute 
+First copy the file ``mh-linux-64__cartesius`` to ``messy_2.54.0/config/mh-linux-64``. Then do 
 ```
 module load 2019
 
