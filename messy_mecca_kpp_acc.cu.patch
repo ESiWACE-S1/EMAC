@@ -1,0 +1,40 @@
+--- messy_mecca_kpp_acc.cu.orig	2020-02-07 15:35:20.269622813 +0100
++++ messy_mecca_kpp_acc.cu	2020-02-07 15:40:25.186614598 +0100
+@@ -11793,12 +11793,12 @@
+         const double press_loc = press_gpu[index];
+         const double cair_loc  = cair_gpu[index];
+ 
+-        double k_HO2_HO2, k_NO3_NO2, k_NO2_HO2, k_HNO3_OH, k_CH3OOH_OH, k_ClO_ClO, k_BrO_NO2, k_I_NO2, k_DMS_OH, k_CH2OO_SO2, k_O3s, beta_null_CH3NO3, beta_inf_CH3NO3, beta_CH3NO3, k_NO2_CH3O2, k_C6H5O2_NO2, k_CH2OO_NO2, beta_C2H5NO3, alpha_NO_HO2, beta_NO_HO2, k0_NO_HO2, k2d_NO_HO2, k1d_NO_HO2, k2w_NO_HO2, k1w_NO_HO2, k_PrO2_HO2, k_PrO2_NO, k_PrO2_CH3O2, G7402a_yield, k_CH3CO3_NO2, k_PAN_M, KRO2NO, KRO2HO2(:), KAPNO, KRO2NO3, KNO3AL, KAPHO2, k_CH3O2, k_RO2RCO3, k_RO2pRO2, k_RO2sRO2, k_RO2tRO2, k_RO2pORO2, k_RO2sORO2, k_RO2tORO2, k_RO2LISOPACO2, k_RO2ISOPBO2, k_RO2ISOPDO2, k_p, k_s, k_t, k_rohro, k_co2h, k_adp, k_ads, k_adt, KHSB, KHSD, K16HSZ14, K16HSZ41, K16HS, K15HSDHB, K14HSAL, K15HS24VYNAL, K15HS42VYNAL, KHYDEC, k_CH2CHOH_OH_HCOOH, k_CH2CHOH_OH_ALD, k_CH2CHOH_HCOOH, k_ALD_HCOOH, J_IC3H7NO3, J_ACETOL, J_HPALD, J_KETENE, RO2, k1_RO2RCO3, k1_RO2pRO2, k1_RO2sRO2, k1_RO2tRO2, k1_RO2pORO2, k1_RO2sORO2, k1_RO2tORO2, k1_RO2LISOPACO2, k1_RO2ISOPBO2, k1_RO2ISOPDO2;
++        double k_HO2_HO2, k_NO3_NO2, k_NO2_HO2, k_HNO3_OH, k_CH3OOH_OH, k_ClO_ClO, k_BrO_NO2, k_I_NO2, k_DMS_OH, k_CH2OO_SO2, k_O3s, beta_null_CH3NO3, beta_inf_CH3NO3, beta_CH3NO3, k_NO2_CH3O2, k_C6H5O2_NO2, k_CH2OO_NO2, beta_C2H5NO3, alpha_NO_HO2, beta_NO_HO2, k0_NO_HO2, k2d_NO_HO2, k1d_NO_HO2, k2w_NO_HO2, k1w_NO_HO2, k_PrO2_HO2, k_PrO2_NO, k_PrO2_CH3O2, G7402a_yield, k_CH3CO3_NO2, k_PAN_M, KRO2NO, KRO2HO2[12], KAPNO, KRO2NO3, KNO3AL, KAPHO2, k_CH3O2, k_RO2RCO3, k_RO2pRO2, k_RO2sRO2, k_RO2tRO2, k_RO2pORO2, k_RO2sORO2, k_RO2tORO2, k_RO2LISOPACO2, k_RO2ISOPBO2, k_RO2ISOPDO2, k_p, k_s, k_t, k_rohro, k_co2h, k_adp, k_ads, k_adt, KHSB, KHSD, K16HSZ14, K16HSZ41, K16HS, K15HSDHB, K14HSAL, K15HS24VYNAL, K15HS42VYNAL, KHYDEC, k_CH2CHOH_OH_HCOOH, k_CH2CHOH_OH_ALD, k_CH2CHOH_HCOOH, k_ALD_HCOOH, J_IC3H7NO3, J_ACETOL, J_HPALD, J_KETENE, RO2, k1_RO2RCO3, k1_RO2pRO2, k1_RO2sRO2, k1_RO2tRO2, k1_RO2pORO2, k1_RO2sORO2, k1_RO2tORO2, k1_RO2LISOPACO2, k1_RO2ISOPBO2, k1_RO2ISOPDO2;
+ 
+         k_HO2_HO2 = (3.0E-13 *exp(460. / temp_loc)+ 2.1E-33 *exp(920. / temp_loc) *cair_loc) * (1.+ 1.4E-21 *exp(2200. / temp_loc) *var[ind_H2O]);
+         k_NO3_NO2 = k_3rd(temp_loc , cair_loc , 2.4E-30 , 3.0 , 1.6E-12 , - 0.1 , 0.6);
+         k_NO2_HO2 = k_3rd(temp_loc , cair_loc , 1.9E-31 , 3.4 , 4.0E-12 , 0.3 , 0.6);
+-        k_HNO3_OH = 1.32E-14 *exp(527. / temp_loc) + 1. / (1. / (7.39E-32 *exp(453. / temp_loc) *cair_loc) + 1. / (9.73E-17 *exp(1910. / temp_loc));
++        k_HNO3_OH = 1.32E-14 *exp(527. / temp_loc) + 1. / (1. / (7.39E-32 *exp(453. / temp_loc) *cair_loc) + 1. / (9.73E-17 *exp(1910. / temp_loc)));
+         k_CH3OOH_OH = 5.3E-12 *exp(190. / temp_loc);
+         k_ClO_ClO = k_3rd(temp_loc , cair_loc , 1.9E-32 , 3.6 , 3.7E-12 , 1.6 , 0.6);
+         k_BrO_NO2 = k_3rd_iupac(temp_loc , cair_loc , 4.7E-31 , 3.1 , 1.8E-11 , 0.0 , 0.4);
+@@ -11827,7 +11827,12 @@
+         k_CH3CO3_NO2 = k_3rd(temp_loc , cair_loc , 9.7E-29 , 5.6 , 9.3E-12 , 1.5 , 0.6);
+         k_PAN_M = k_CH3CO3_NO2 / (9.0E-29 *exp(14000. / temp_loc));
+         KRO2NO = 2.54E-12 *exp(360. / temp_loc);
+-        KRO2HO2(:) = 2.91E-13 *exp(1300. / temp_loc) *(1.- exp(- 0.245 *(nC(:))));
++
++        /*KRO2HO2(:) = 2.91E-13 *exp(1300. / temp_loc) *(1.- exp(- 0.245 *(nC(:))));*/
++        for (int ii=0;ii<12;ii++) {
++            KRO2HO2[ii] = 2.91E-13 *exp(1300. / temp_loc) * (1.- exp(- 0.245 *float(ii+1)));
++        }
++
+         KAPNO = 8.10E-12 *exp(270. / temp_loc);
+         KRO2NO3 = 2.50E-12;
+         KNO3AL = 1.4E-12 *exp(- 1900. / temp_loc);
+@@ -11867,7 +11872,7 @@
+         k_ALD_HCOOH = 1.17E-19 * pow(temp_loc, 1.209 *exp(- 556. / (1.987 *temp_loc)));
+         J_IC3H7NO3 = 3.7 *jx(index,ip_PAN);
+         J_ACETOL = 0.65 *0.11 *jx(index,ip_CHOH);
+-        J_HPALD = (jx(index,IP_CH3OOH)+ jx(index,ip_MACR) / (2. *1.95E-3));
++        J_HPALD = (jx(index,ip_CH3OOH)+ jx(index,ip_MACR) / (2. *1.95E-3));
+         J_KETENE = jx(index,ip_MVK) / 0.004;
+         RO2 = 0.;
+         if (ind_LISOPACO2>0) RO2 = RO2 + var[ind_LISOPACO2];
