@@ -97,7 +97,7 @@ MODOPT   = -I
      ###        SPEC_NETCDF_LIB to ld-options (-L ...  -l...)
      NETCDFROOT =
      SPEC_NETCDF_INC = $EBROOTNETCDFMINFORTRAN/include
-     SPEC_NETCDF_LIB = -L$EBROOTNETCDFMINFORTRAN/lib -lnetcdff
+     SPEC_NETCDF_LIB = -L$EBROOTNETCDFMINFORTRAN/lib -lnetcdff -lstdc++ -lcudart
      ###
      ### (3) BLAS and LAPACK LIBRARIES (options a, b and are exclusive)
      ###     a) keep all entries empty -> blas/lapack contained in 
