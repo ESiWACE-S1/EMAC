@@ -1305,38 +1305,40 @@
 
 #define ROUND128(X)  (X + (128 - 1)) & ~(128 - 1)
 
-#define rconst(i,j)  rconst[(j)]
+//#define rconst(i,j)  rconst[(j)]
 
+//3968 should be VL_GLO
+#define rconst(i,j)  rconst[(j)*3968 + (i)]
 
 /* Temporary arrays allocated in stack */
-#define var(i,j)     var[(j)]
-#define fix(i,j)     fix[(j)]
-#define jcb(i,j)     jcb[(j)]
-#define varDot(i,j)  varDot[j]
-#define varNew(i,j) varNew[(j)]
-#define Fcn0(i,j)   Fcn0[(j)]
-#define Fcn(i,j)    Fcn[(j)]
-#define Fcn(i,j)    Fcn[(j)]
-#define dFdT(i,j)   dFdT[(j)]
-#define varErr(i,j) varErr[(j)]
-#define K(i,j,k) K[(j)*(NVAR)+(k)]
-#define jac0(i,j)    jac0[(j)]    
-#define Ghimj(i,j)   Ghimj[(j)]   
+// #define var(i,j)     var[(j)]
+// #define fix(i,j)     fix[(j)]
+// #define jcb(i,j)     jcb[(j)]
+// #define varDot(i,j)  varDot[j]
+// #define varNew(i,j) varNew[(j)]
+// #define Fcn0(i,j)   Fcn0[(j)]
+// #define Fcn(i,j)    Fcn[(j)]
+// #define Fcn(i,j)    Fcn[(j)]
+// #define dFdT(i,j)   dFdT[(j)]
+// #define varErr(i,j) varErr[(j)]
+// #define K(i,j,k) K[(j)*(NVAR)+(k)]
+// #define jac0(i,j)    jac0[(j)]    
+// #define Ghimj(i,j)   Ghimj[(j)]   
 
-//#define var(i,j)     var[(j)]
-//#define fix(i,j)     fix[(j)]
-//#define jcb(i,j)     jcb[(j)]
-//#define varDot(i,j)  varDot[j]
-//#define varNew(i,j) varNew[(j)]
-//#define Fcn0(i,j)   Fcn0[(j)]
-//#define Fcn(i,j)    Fcn[(j)]
-//#define Fcn(i,j)    Fcn[(j)]
-//#define dFdT(i,j)   dFdT[(j)]
-//#define varErr(i,j) varErr[(j)]
-//#define K(i,j,k) K[(j)*(NVAR)+(k)]
-//#define jac0(i,j)    jac0[(j)]    
-//#define Ghimj(i,j)   Ghimj[(j)]   
-
+//3968 should be VL_GLO
+#define var(i,j)     var[(j)* 3968 + (i)]
+#define fix(i,j)     fix[(j)* 3968 + (i)]
+#define jcb(i,j)     jcb[(j)* 3968 + (i)]
+#define varDot(i,j)  varDot[j* 3968 + (i)]
+#define varNew(i,j) varNew[(j)* 3968 + (i)]
+#define Fcn0(i,j)   Fcn0[(j)* 3968 + (i)]
+#define Fcn(i,j)    Fcn[(j)* 3968 + (i)]
+#define Fcn(i,j)    Fcn[(j)* 3968 + (i)]
+#define dFdT(i,j)   dFdT[(j)* 3968 + (i)]
+#define varErr(i,j) varErr[(j)* 3968 + (i)]
+#define K(i,j,k) K[((j)*(NVAR)+(k)) * 3968 + (i)]
+#define jac0(i,j)    jac0[(j)* 3968 + (i)]    
+#define Ghimj(i,j)   Ghimj[(j)* 3968 + (i)]   
 
 /* Enable debug flags for GPU */
 //#define DEBUG
@@ -1733,6 +1735,8 @@ __device__ void kppDecomp(double *Ghimj, int VL_GLO)
     double a=0.0;
 
  double dummy, W_0, W_1, W_2, W_3, W_4, W_5, W_6, W_7, W_8, W_9, W_10, W_11, W_12, W_13, W_14, W_15, W_16, W_17, W_18, W_19, W_20, W_21, W_22, W_23, W_24, W_25, W_26, W_27, W_28, W_29, W_30, W_31, W_32, W_33, W_34, W_35, W_36, W_37, W_38, W_39, W_40, W_41, W_42, W_43, W_44, W_45, W_46, W_47, W_48, W_49, W_50, W_51, W_52, W_53, W_54, W_55, W_56, W_57, W_58, W_59, W_60, W_61, W_62, W_63, W_64, W_65, W_66, W_67, W_68, W_69, W_70, W_71, W_72, W_73, W_74, W_75, W_76, W_77, W_78, W_79, W_80, W_81, W_82, W_83, W_84, W_85, W_86, W_87, W_88, W_89, W_90, W_91, W_92, W_93, W_94, W_95, W_96, W_97, W_98, W_99, W_100, W_101, W_102, W_103, W_104, W_105, W_106, W_107, W_108, W_109, W_110, W_111, W_112, W_113, W_114, W_115, W_116, W_117, W_118, W_119, W_120, W_121, W_122, W_123, W_124, W_125, W_126, W_127, W_128, W_129, W_130, W_131, W_132, W_133, W_134, W_135, W_136, W_137, W_138, W_139, W_140, W_141;
+
+ int index = blockIdx.x*blockDim.x+threadIdx.x;
 
         W_1 = Ghimj(index,7);
         W_2 = Ghimj(index,8);
@@ -11802,6 +11806,16 @@ double * temp_gpu;
 double * press_gpu;
 double * cair_gpu;
 
+double * Ghimj;
+double * K;
+double * varNew;
+double * Fcn0;
+double * dFdT;
+double * jac0;
+double * varErr;
+double * var;
+double * fix;
+double * rconst;
 
 __device__ void  update_rconst(const double * __restrict__ var, 
  			       const double * __restrict__ khet_st, const double * __restrict__ khet_tr,
@@ -12711,7 +12725,17 @@ void Rosenbrock_ros3(double * __restrict__ conc, const double Tstart, const doub
                 const double * __restrict__ temp_gpu,
                 const double * __restrict__ press_gpu,
                 const double * __restrict__ cair_gpu,
-                const int VL_GLO)
+		const int VL_GLO,
+		double * __restrict__ Ghimj,
+		double * __restrict__ K,
+		double * __restrict__ varNew,
+		double * __restrict__ Fcn0,
+		double * __restrict__ dFdT,
+		double * __restrict__ jac0,
+		double * __restrict__ varErr,
+		double * __restrict__ var,
+		double * __restrict__ fix,
+		double * __restrict__ rconst)
 {
     int index = blockIdx.x*blockDim.x+threadIdx.x;
 
@@ -12726,28 +12750,28 @@ void Rosenbrock_ros3(double * __restrict__ conc, const double Tstart, const doub
      *  optimize accesses. 
      *
      */
-    double varNew_stack[NVAR];
-    double var_stack[NVAR];
-    double varErr_stack[NVAR];
-    double fix_stack[NFIX];
-    double Fcn0_stack[NVAR];
-    double jac0_stack[LU_NONZERO];
-    double dFdT_stack[NVAR];
-    double Ghimj_stack[LU_NONZERO];
-    double K_stack[3*NVAR];
-    double rconst_stack[NREACT];
+    // double varNew_stack[NVAR];
+    // double var_stack[NVAR];
+    // double varErr_stack[NVAR];
+    // double fix_stack[NFIX];
+    // double Fcn0_stack[NVAR];
+    // double jac0_stack[LU_NONZERO];
+    // double dFdT_stack[NVAR];
+    // double Ghimj_stack[LU_NONZERO];
+    // double K_stack[3*NVAR];
+    // double rconst_stack[NREACT];
 
-    /* Allocated in stack */
-    double *Ghimj  = Ghimj_stack;
-    double *K      = K_stack;
-    double *varNew = varNew_stack;
-    double *Fcn0   = Fcn0_stack;
-    double *dFdT   = dFdT_stack;
-    double *jac0   = jac0_stack;
-    double *varErr = varErr_stack;
-    double *var    = var_stack;
-    double *fix    = fix_stack;  
-    double *rconst = rconst_stack;
+    // /* Allocated in stack */
+    // double *Ghimj  = Ghimj_stack;
+    // double *K      = K_stack;
+    // double *varNew = varNew_stack;
+    // double *Fcn0   = Fcn0_stack;
+    // double *dFdT   = dFdT_stack;
+    // double *jac0   = jac0_stack;
+    // double *varErr = varErr_stack;
+    // double *var    = var_stack;
+    // double *fix    = fix_stack;  
+    // double *rconst = rconst_stack;
 
     const int method = 2;
 
@@ -13003,6 +13027,16 @@ __host__ void init_first_time(int pe, int VL_GLO, int size_khet_st, int size_khe
     gpuErrchk( cudaMalloc ((void **) &d_xNacc   , sizeof(int)*VL_GLO));
     gpuErrchk( cudaMalloc ((void **) &d_xNrej   , sizeof(int)*VL_GLO));
     
+    gpuErrchk( cudaMalloc ((void **) &Ghimj,  sizeof(double) * VL_GLO *  LU_NONZERO));
+    gpuErrchk( cudaMalloc ((void **) &K,      sizeof(double) * VL_GLO *  6*NVAR));
+    gpuErrchk( cudaMalloc ((void **) &varNew, sizeof(double) * VL_GLO *  NVAR));
+    gpuErrchk( cudaMalloc ((void **) &Fcn0,   sizeof(double) * VL_GLO *  NVAR));
+    gpuErrchk( cudaMalloc ((void **) &dFdT,   sizeof(double) * VL_GLO *  NVAR));
+    gpuErrchk( cudaMalloc ((void **) &jac0,   sizeof(double) * VL_GLO *  LU_NONZERO));
+    gpuErrchk( cudaMalloc ((void **) &varErr, sizeof(double) * VL_GLO *  NVAR));
+    gpuErrchk( cudaMalloc ((void **) &var,    sizeof(double) * VL_GLO *  NSPEC));
+    gpuErrchk( cudaMalloc ((void **) &fix,    sizeof(double) * VL_GLO *  NFIX));
+    gpuErrchk( cudaMalloc ((void **) &rconst, sizeof(double) * VL_GLO *  NREACT));
 
     initialized = TRUE;
 }
@@ -13302,7 +13336,8 @@ extern "C" void kpp_integrate_cuda_( int *pe_p, int *sizes, double *time_step_le
                     d_absTol, d_relTol,
                     d_khet_st, d_khet_tr, d_jx, 
                     temp_gpu, press_gpu, cair_gpu, 
-                    VL_GLO);
+		    VL_GLO,
+                    Ghimj, K,varNew,Fcn0,dFdT,jac0,varErr,var,fix,rconst);
             break;
         default: 
       Rosenbrock<<<dimGrid,dimBlock>>>(d_conc, Tstart, Tend, d_rstatus, d_istatus,
