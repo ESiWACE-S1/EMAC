@@ -1,0 +1,31 @@
+1. *test_globmem.cu*
+
+nvcc -arch=sm_35 -keep -O3 --ptxas-options=-v test_globmem.cu -o test_globmem_35_O3
+ptxas info    : 0 bytes gmem
+ptxas info    : Compiling entry function '_Z8mykernelPdPiS_S_' for 'sm_35'
+ptxas info    : Function properties for _Z8mykernelPdPiS_S_
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 31 registers, 352 bytes cmem[0], 8 bytes cmem[2]
+
+2. *test_stack.cu*
+
+nvcc -arch=sm_35 -keep -O3 --ptxas-options=-v test_stack.cu -o test_stack_35_O3
+ptxas info    : 0 bytes gmem
+ptxas info    : Compiling entry function '_Z8mykernelPdPi' for 'sm_35'
+ptxas info    : Function properties for _Z8mykernelPdPi
+    65536 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 32 registers, 336 bytes cmem[0], 8 bytes cmem[2]
+
+3. *test_stack_half.cu*
+
+nvcc -arch=sm_35 -keep -O3 --ptxas-options=-v test_stack_half.cu -o test_stack_half_35_O3
+ptxas info    : 0 bytes gmem
+ptxas info    : Compiling entry function '_Z8mykernelPdPi' for 'sm_35'
+ptxas info    : Function properties for _Z8mykernelPdPi
+    32768 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 32 registers, 336 bytes cmem[0], 8 bytes cmem[2]
+
+
+test_globmem.cu    : 192 MiB at runtime (nvidia-smi)
+test_stack.cu      : 2068 MiB at runtime (nvidia-smi)
+test_stack_half.cu : 1048 MiB at runtime (nvidia-smi)
